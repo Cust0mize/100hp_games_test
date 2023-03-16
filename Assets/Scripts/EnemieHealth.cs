@@ -21,6 +21,7 @@ public class EnemieHealth : MonoBehaviour, IDamageble
 
     public void Die() {
         _signalBus.Fire(new SignalRemoveEnemy(_enemy));
+        _signalBus.Fire<SignalUpdateCoinValue>();
         Destroy(gameObject);
     }
 }

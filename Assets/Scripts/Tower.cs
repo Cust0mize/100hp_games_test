@@ -31,7 +31,7 @@ public class Tower : MonoBehaviour
     }
 
     private async void Shoot(SignalNewWave signalNewWave = null) {
-        await UniTask.Delay(TimeSpan.FromSeconds(_shootTime * 2));
+        await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
 
         if (signalNewWave != null) {
             _targetEnemie = signalNewWave.TargetEnemy;

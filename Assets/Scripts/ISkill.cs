@@ -1,6 +1,8 @@
 ﻿public interface ISkill
 {
+    public SkillType Type { get; }
     public float DefaultPrice { get; }
     public int Level { get; set; }
-    public void Upgrade(GameSaver gameSaver);
+    public int MaxLevel { get; }
+    public bool Upgrade();
 }

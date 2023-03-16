@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameSaver
 {
@@ -6,6 +7,8 @@ public class GameSaver
     private const string _bulletDamage = "bullet_damage";
     private const string _towerRadius = "tower_radius";
     private const string _shootTime = "shoot_time";
+    private const string _shootTimeLevel = "shoot_time_level";
+    private const string _radiusLevel = "radius_level";
 
     public float GetCurrentCoins() {
         return PlayerPrefs.GetFloat(_currentCoins, 0);
@@ -16,12 +19,30 @@ public class GameSaver
         PlayerPrefs.SetFloat(_currentCoins, newCoinsValue);
     }
 
+    public int GetTowerRadiusLevel() {
+        return PlayerPrefs.GetInt(_radiusLevel, 1);
+    }
+
     public float GetBulletDamage() {
-        return PlayerPrefs.GetFloat(_bulletDamage, 1);
+        return PlayerPrefs.GetFloat(_bulletDamage, Constans.DefaultDamage);
+    }
+
+    internal void SetRadiusTowerLevel(int level) {
+        level++;
+        PlayerPrefs.SetInt(_radiusLevel, level);
+    }
+
+    public int GetShootTimeSkillLevel() {
+        return PlayerPrefs.GetInt(_shootTimeLevel, 1);
     }
 
     public void SetBulletDamage(float value) {
         PlayerPrefs.SetFloat(_bulletDamage, value);
+    }
+
+    public void SetShootTimeLevel(int level) {
+        level++;
+        PlayerPrefs.SetInt(_shootTimeLevel, level);
     }
 
     public float GetTowerRadius() {
@@ -30,8 +51,8 @@ public class GameSaver
 
     public void SetTowerRadius(float newRadius) {
         PlayerPrefs.SetFloat(_towerRadius, newRadius);
-    }    
-    
+    }
+
     public float GetShootTime() {
         return PlayerPrefs.GetFloat(_shootTime, Constans.DefaultShootTime);
     }

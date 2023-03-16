@@ -12,14 +12,15 @@ public class InfoPanel : MonoBehaviour
     public void Construct(GameSaver gameSaver, SignalBus signalBus) {
         _gameSaver = gameSaver;
         _signalBus = signalBus;
+        _signalBus.Subscribe<SignalUpdateCoinValue>(UpdateCoinValue);
+        _coinValue.text = _gameSaver.GetCurrentCoins().ToString();
     }
 
     private void Start() {
-        _coinValue.text = _gameSaver.GetCurrentCoins().ToString();
-        _signalBus.Subscribe<SignalRemoveEnemy>(UpdateCoinValue);
+
     }
 
-    private void UpdateCoinValue(SignalRemoveEnemy signalRemoveEnemy) {
+    private void UpdateCoinValue() {
         _coinValue.text = _gameSaver.GetCurrentCoins().ToString();
     }
 }

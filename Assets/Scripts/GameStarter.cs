@@ -11,7 +11,7 @@ public class GameStarter : MonoBehaviour
     [Inject]
     public void Construct(GameSaver gameSaver, SignalBus signalBus) {
         _signalBus = signalBus;
-            GameController gameController = new GameController(gameSaver, _signalBus);
+        GameController gameController = new GameController(gameSaver, _signalBus);
     }
 
     private void Start() {

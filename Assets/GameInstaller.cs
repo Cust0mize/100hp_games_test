@@ -26,6 +26,7 @@ public class GameInstaller : MonoInstaller
         Container.DeclareSignal<SignalRemoveEnemy>();
         Container.DeclareSignal<SignalUpdateRadius>();
         Container.DeclareSignal<SignalUpdateShootTime>();
+        Container.DeclareSignal<SignalUpdateCoinValue>();
     }
 
     private void BindBaseSceneDependencies() {

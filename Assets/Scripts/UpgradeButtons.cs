@@ -1,26 +1,28 @@
 using UnityEngine.UI;
 using UnityEngine;
-using TMPro;
 using Zenject;
+using System.Collections.Generic;
 
 public class UpgradeButtons : MonoBehaviour
 {
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _radiusButton;
     [SerializeField] private Button _shootTimeButton;
-    [SerializeField] private TextMeshProUGUI _attackLevelText;
-    [SerializeField] private TextMeshProUGUI _radiusLevelText;
-    [SerializeField] private TextMeshProUGUI _shootTimeLevelText;
+    [SerializeField] private List<LowButtonItem> _buttonLists;
+
     private ISkill _currentSkill;
+    private LowButtonItem _currentButtonelement;
     private GameSaver _gameSaver;
+    private SignalBus _signalBus;
 
     private ShootTimeSkill _shootTimeSkill;
     private AttackSkill _attackSkill;
     private RadiusSkill _radiusSkill;
 
     [Inject]
-    public void Construct(GameSaver gameSaver, ShootTimeSkill shootTimeSkill, AttackSkill attackSkill, RadiusSkill radiusSkill) {
+    public void Construct(GameSaver gameSaver, SignalBus signalBus, ShootTimeSkill shootTimeSkill, AttackSkill attackSkill, RadiusSkill radiusSkill) {
         _gameSaver = gameSaver;
+        _signalBus = signalBus;
         _shootTimeSkill = shootTimeSkill;
         _attackSkill = attackSkill;
         _radiusSkill = radiusSkill;
@@ -28,14 +30,16 @@ public class UpgradeButtons : MonoBehaviour
 
     private void Start() {
         SubscribeButton();
-        UpdateText();
+        UpdateAllText(_shootTimeSkill, _attackSkill, _radiusSkill);
     }
 
     private void TryUpgradeCurrentSkill() {
         if (_gameSaver.GetCurrentCoins() >= _currentSkill.Level * _currentSkill.DefaultPrice) {
-            _currentSkill.Upgrade(_gameSaver);
-            _currentSkill.Level++;
-            UpdateText();
+            if (_currentSkill.Upgrade()) {
+                _currentSkill.Level++;
+                _signalBus.Fire<SignalUpdateCoinValue>();
+                UpdateText();
+            }
         }
     }
 
@@ -55,14 +59,31 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void UpdateText() {
-        _attackLevelText.text = $"Level: {_attackSkill.Level}";
-        _radiusLevelText.text = $"Level: {_radiusSkill.Level}";
-        _shootTimeLevelText.text = $"Level: {_shootTimeSkill.Level}";
+        SearchCurrentButtonItem();
+        _currentButtonelement.UpdateElement(_currentSkill);
+    }
+
+    private void SearchCurrentButtonItem() {
+        for (int i = 0; i < _buttonLists.Count; i++) {
+            if (_buttonLists[i].SkillType == _currentSkill.Type) {
+                _currentButtonelement = _buttonLists[i];
+            }
+        }
     }
 
     private void SubscribeButton() {
         _attackButton.onClick.AddListener(OnUpgradeAttack);
         _radiusButton.onClick.AddListener(OnUpgradeRadius);
         _shootTimeButton.onClick.AddListener(OnUpgradeShootTime);
+    }
+
+    private void UpdateAllText(params ISkill[] skill) {
+        for (int i = 0; i < _buttonLists.Count; i++) {
+            for (int j = 0; j < skill.Length; j++) {
+                if (_buttonLists[i].SkillType == skill[j].Type) {
+                    _buttonLists[i].UpdateElement(skill[j]);
+                }
+            }
+        }
     }
 }
