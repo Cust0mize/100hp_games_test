@@ -9,6 +9,7 @@ public class GameSaver
     private const string _shootTime = "shoot_time";
     private const string _shootTimeLevel = "shoot_time_level";
     private const string _radiusLevel = "radius_level";
+    private const string _waweCount = "_wawe_count";
 
     public float GetCurrentCoins() {
         return PlayerPrefs.GetFloat(_currentCoins, 0);
@@ -59,5 +60,13 @@ public class GameSaver
 
     public void SetShootTime(float newRadius) {
         PlayerPrefs.SetFloat(_shootTime, newRadius);
+    }
+
+    public int GetWaweNumber() {
+        return PlayerPrefs.GetInt(_waweCount, 1);
+    }
+
+    public void SetWaweNumber(int value) {
+        PlayerPrefs.SetInt(_waweCount, value);
     }
 }

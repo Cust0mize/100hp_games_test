@@ -16,8 +16,8 @@ public class Tower : MonoBehaviour
     private SignalBus _signalBus;
     private bool _isShooting = true;
 
-    public static float _defaultShootTime{ get; private set; }
-    public static float _defaultShootRadius{ get; private set; }
+    public static float _defaultShootTime { get; private set; }
+    public static float _defaultShootRadius { get; private set; }
 
     [Inject]
     public void Construct(GameSaver gameSaver, SignalBus signalBus) {
@@ -51,7 +51,6 @@ public class Tower : MonoBehaviour
                 if (Vector3.Distance(transform.position, _targetEnemy.transform.position) > _shootRadius) {
                     _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
                     await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
-                    continue;
                 }
                 else {
                     Bullet bullet = Instantiate(_bulletPrefab, _startShootTransform.position, _startShootTransform.rotation);

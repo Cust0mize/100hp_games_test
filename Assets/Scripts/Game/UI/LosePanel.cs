@@ -9,10 +9,11 @@ public class LosePanel : AbstractPanel
 
     public override void Show(Action onComplete) {
         base.Show(onComplete);
-        _restartButton.onClick.AddListener(NextLevel);
+        _restartButton.onClick.AddListener(RestartGame);
     }
 
-    private void NextLevel() {
+    private void RestartGame() {
         SceneManager.LoadScene(0);
+        PlayerPrefs.DeleteAll();
     }
 }

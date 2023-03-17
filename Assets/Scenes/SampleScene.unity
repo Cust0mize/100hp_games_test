@@ -998,7 +998,6 @@ MonoBehaviour:
   - {fileID: 840165321}
   _enemyPrefab: {fileID: 8791334730844084039, guid: b3fa4d6773fe90545b317c9bb2035b48, type: 3}
   _timeSpawnDelay: 2
-  _spawnCount: 7
 --- !u!4 &774025087
 Transform:
   m_ObjectHideFlags: 0
@@ -2236,7 +2235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.9086304, y: -5.977051}
+  m_AnchoredPosition: {x: 7.9086914, y: -5.977051}
   m_SizeDelta: {x: 288.49, y: 159.29}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1649805378

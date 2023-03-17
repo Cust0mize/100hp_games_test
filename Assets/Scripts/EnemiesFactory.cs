@@ -9,16 +9,19 @@ public class EnemiesFactory : MonoBehaviour
 {
     [SerializeField] private List<Transform> _spawnZones;
     [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private float _timeSpawnDelay = 2;
-    [SerializeField] private int _spawnCount = 5;
     private List<Enemy> _enemies = new List<Enemy>();
     private Enemy _oldEnemy;
     private Tower _tower;
     private SignalBus _signalBus;
+    private GameSaver _gameSaver;
+    private int _waweNumber;
+    private bool _isFirstBoot = true;
 
     [Inject]
-    public void Construct(SignalBus signalBus) {
+    public void Construct(SignalBus signalBus, GameSaver gameSaver) {
         _signalBus = signalBus;
+        _gameSaver = gameSaver;
+        _waweNumber = _gameSaver.GetWaweNumber();
     }
 
     public void Init(Tower tower) {
@@ -28,20 +31,22 @@ public class EnemiesFactory : MonoBehaviour
         CreateEnemies();
     }
 
-    public void CreateEnemies() {
-        for (int i = 0; i < _spawnCount; i++) {
+    public async void CreateEnemies() {
+        _gameSaver.SetWaweNumber(_waweNumber);
+
+        for (int i = 0; i < _waweNumber; i++) {
             Enemy enemy = Instantiate(_enemyPrefab, SpawnTo(), Quaternion.identity);
-            if (enemy.Init(_signalBus, _tower.transform.position)) {
+
+            if (await enemy.Init(_signalBus, _tower.transform.position)) {
                 Destroy(enemy.gameObject);
                 i--;
-                continue;
             }
             else {
+                enemy.Stop();
                 _enemies.Add(enemy);
             }
         }
-
-        _signalBus.Fire(new SignalNewWave(_enemies[Random.Range(0, _enemies.Count)]));
+        StartNewWave();
     }
 
     public Enemy ChangeRandomEnemie() {
@@ -80,13 +85,25 @@ public class EnemiesFactory : MonoBehaviour
         return position;
     }
 
-    private async void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
+    private void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
         _enemies.Remove(signalRemoveEnemy.Enemy);
 
         if (_enemies.Count == 0) {
             _enemies.Clear();
-            await UniTask.Delay(TimeSpan.FromSeconds(_timeSpawnDelay));
             CreateEnemies();
+        }
+    }
+
+    private void StartNewWave() {
+        foreach (var enemy in _enemies) {
+            enemy.StartMove();
+        }
+
+        _waweNumber++;
+
+        if (_isFirstBoot) {
+            _isFirstBoot = false;
+            _signalBus.Fire(new SignalNewWave(_enemies[Random.Range(0, _enemies.Count)]));
         }
     }
 }

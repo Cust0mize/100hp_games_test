@@ -9,7 +9,6 @@ public class GameInstaller : MonoInstaller
     public override void InstallBindings() {
         BindBaseSceneDependencies();
         BindSkillDependencies();
-        //BindMemoryPools();
         BindSignals();
         BindUI();
     }

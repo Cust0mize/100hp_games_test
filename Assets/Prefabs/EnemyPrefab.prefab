@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8791334730844084036}
   - component: {fileID: 8791334730844084039}
   - component: {fileID: -6641806338912340478}
-  - component: {fileID: -2563586271775210120}
+  - component: {fileID: 8468228972807665000}
   - component: {fileID: -3481529291381823442}
   - component: {fileID: 5287266565917952960}
   m_Layer: 0
@@ -133,8 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb824223b31c5da4f93e652d9558b558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8791334730348015204}
   _health: {fileID: -6641806338912340478}
-  _moveToTarget: {fileID: -2563586271775210120}
+  _enemyMove: {fileID: 8468228972807665000}
   _rewardForKill: 1
 --- !u!114 &-6641806338912340478
 MonoBehaviour:
@@ -149,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 3
---- !u!114 &-2563586271775210120
+--- !u!114 &8468228972807665000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,10 +159,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8791334730844084038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efc4aeba0202a34fa0d92689dbc93b2, type: 3}
+  m_Script: {fileID: 11500000, guid: f128f359aa08e0546bef16c1008565d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.28
+  <Speed>k__BackingField: 0.2
 --- !u!58 &-3481529291381823442
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -195,7 +196,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
