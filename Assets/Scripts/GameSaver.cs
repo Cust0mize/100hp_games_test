@@ -24,7 +24,7 @@ public class GameSaver
     }
 
     public float GetBulletDamage() {
-        return PlayerPrefs.GetFloat(_bulletDamage, Constans.DefaultDamage);
+        return PlayerPrefs.GetFloat(_bulletDamage, 1);
     }
 
     internal void SetRadiusTowerLevel(int level) {
@@ -46,7 +46,7 @@ public class GameSaver
     }
 
     public float GetTowerRadius() {
-        return PlayerPrefs.GetFloat(_towerRadius, Constans.DefaultRadius);
+        return PlayerPrefs.GetFloat(_towerRadius, Tower._defaultShootRadius);
     }
 
     public void SetTowerRadius(float newRadius) {
@@ -54,7 +54,7 @@ public class GameSaver
     }
 
     public float GetShootTime() {
-        return PlayerPrefs.GetFloat(_shootTime, Constans.DefaultShootTime);
+        return PlayerPrefs.GetFloat(_shootTime, Tower._defaultShootTime);
     }
 
     public void SetShootTime(float newRadius) {

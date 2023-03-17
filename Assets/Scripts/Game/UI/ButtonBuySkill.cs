@@ -13,8 +13,8 @@ public class ButtonBuySkill : MonoBehaviour
             return;
         }
 
-        _level.text = skill.Level.ToString();
-        _price.text = (skill.Level * skill.DefaultPrice).ToString();
+        _level.text = $"Level: {skill.Level}";
+        _price.text = $"Price: {skill.Level * skill.DefaultPrice}";
     }
 
     internal void MaxLevel() {

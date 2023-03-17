@@ -7,9 +7,10 @@ using Zenject;
 
 public class EnemiesFactory : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _spawnTransforms;
+    [SerializeField] private List<Transform> _spawnZones;
     [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private float _timeSpawnDelay = 2;
+    [SerializeField] private int _spawnCount = 5;
     private List<Enemy> _enemies = new List<Enemy>();
     private Enemy _oldEnemy;
     private Tower _tower;
@@ -28,31 +29,19 @@ public class EnemiesFactory : MonoBehaviour
     }
 
     public void CreateEnemies() {
-        foreach (var transform in _spawnTransforms) {
-            Enemy enemy = Instantiate(_enemyPrefab, transform.position, transform.rotation);
-            enemy.Init(_signalBus, _tower.transform.position);
-            _enemies.Add(enemy);
+        for (int i = 0; i < _spawnCount; i++) {
+            Enemy enemy = Instantiate(_enemyPrefab, SpawnTo(), Quaternion.identity);
+            if (enemy.Init(_signalBus, _tower.transform.position)) {
+                Destroy(enemy.gameObject);
+                i--;
+                continue;
+            }
+            else {
+                _enemies.Add(enemy);
+            }
         }
 
         _signalBus.Fire(new SignalNewWave(_enemies[Random.Range(0, _enemies.Count)]));
-    }
-
-    private void StopCreateEnemies() {
-        _signalBus.Unsubscribe<SignalGameOver>(StopCreateEnemies);
-
-        foreach (var enemy in _enemies) {
-            enemy.Stop();
-        }
-    }
-
-    private async void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
-        _enemies.Remove(signalRemoveEnemy.Enemy);
-
-        if (_enemies.Count == 0) {
-            _enemies.Clear();
-            await UniTask.Delay(TimeSpan.FromSeconds(_timeSpawnDelay));
-            CreateEnemies();
-        }
     }
 
     public Enemy ChangeRandomEnemie() {
@@ -74,5 +63,30 @@ public class EnemiesFactory : MonoBehaviour
         } while (newEnemy == _oldEnemy);
         _oldEnemy = newEnemy;
         return newEnemy;
+    }
+
+    private void StopCreateEnemies() {
+        _signalBus.Unsubscribe<SignalGameOver>(StopCreateEnemies);
+
+        foreach (var enemy in _enemies) {
+            enemy.Stop();
+        }
+    }
+
+    private Vector3 SpawnTo() {
+        Transform currentSpawnZone = _spawnZones[Random.Range(0, _spawnZones.Count)];
+        Vector3 localpoint = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+        Vector3 position = currentSpawnZone.TransformPoint(localpoint);
+        return position;
+    }
+
+    private async void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
+        _enemies.Remove(signalRemoveEnemy.Enemy);
+
+        if (_enemies.Count == 0) {
+            _enemies.Clear();
+            await UniTask.Delay(TimeSpan.FromSeconds(_timeSpawnDelay));
+            CreateEnemies();
+        }
     }
 }

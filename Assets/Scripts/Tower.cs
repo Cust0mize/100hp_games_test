@@ -8,18 +8,26 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform _startShootTransform;
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private CircleRenderer _circleRenderer;
+    [SerializeField] private float _shootTime;
+    [SerializeField] private float _shootRadius;
     private EnemiesFactory _enemiesFactory;
     private Enemy _targetEnemy;
     private GameSaver _gameSaver;
     private SignalBus _signalBus;
-    private float _shootTime;
-    private float _shootRadius;
     private bool _isShooting = true;
+
+    public static float _defaultShootTime{ get; private set; }
+    public static float _defaultShootRadius{ get; private set; }
 
     [Inject]
     public void Construct(GameSaver gameSaver, SignalBus signalBus) {
         _gameSaver = gameSaver;
         _signalBus = signalBus;
+    }
+
+    public void DoInit() {
+        _defaultShootTime = _shootTime;
+        _defaultShootRadius = _shootRadius;
     }
 
     public void Init(EnemiesFactory enemiesFactory) {
@@ -52,9 +60,6 @@ public class Tower : MonoBehaviour
                     _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
                 }
             }
-        }
-        else {
-            return;
         }
     }
 

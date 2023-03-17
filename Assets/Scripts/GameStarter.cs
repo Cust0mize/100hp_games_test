@@ -15,7 +15,12 @@ public class GameStarter : MonoBehaviour
     }
 
     private void Start() {
+        DoInit();
         StartGame();
+    }
+
+    private void DoInit() {
+        _tower.DoInit();
     }
 
     private void StartGame() {

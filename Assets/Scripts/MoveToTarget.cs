@@ -14,13 +14,12 @@ public class MoveToTarget : MonoBehaviour
     }
 
     private void Update() {
-        MoveToTower();
+        Move();
     }
 
-    private void MoveToTower() {
+    private void Move() {
         Vector3 direction = _targetPosition - transform.position;
-        Vector3 moveDirection = direction.normalized;
-        Vector3 newPosition = transform.position + moveDirection * _speed * Time.deltaTime;
-        transform.position = newPosition;
+        Vector3 newPosition = direction.normalized * _speed * Time.deltaTime;
+        transform.position += newPosition;
     }
 }

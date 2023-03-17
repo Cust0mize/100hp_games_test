@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: -6641806338912340478}
   - component: {fileID: -2563586271775210120}
   - component: {fileID: -3481529291381823442}
-  - component: {fileID: -5796494772018933810}
+  - component: {fileID: 5287266565917952960}
   m_Layer: 0
   m_Name: EnemyPrefab
   m_TagString: Untagged
@@ -178,7 +178,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.19600019
---- !u!50 &-5796494772018933810
+--- !u!50 &5287266565917952960
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -186,7 +186,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8791334730844084038}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
