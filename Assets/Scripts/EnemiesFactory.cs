@@ -40,6 +40,9 @@ public class EnemiesFactory : MonoBehaviour
     private void StopCreateEnemies() {
         _signalBus.Unsubscribe<SignalGameOver>(StopCreateEnemies);
 
+        foreach (var enemy in _enemies) {
+            enemy.Stop();
+        }
     }
 
     private async void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
@@ -50,11 +53,6 @@ public class EnemiesFactory : MonoBehaviour
             await UniTask.Delay(TimeSpan.FromSeconds(_timeSpawnDelay));
             CreateEnemies();
         }
-    }
-
-    private void OnDestroy() {
-        _signalBus.Unsubscribe<SignalRemoveEnemy>(RemoveEnemie);
-
     }
 
     public Enemy ChangeRandomEnemie() {

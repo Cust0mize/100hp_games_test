@@ -9,11 +9,12 @@ public class Tower : MonoBehaviour
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private CircleRenderer _circleRenderer;
     private EnemiesFactory _enemiesFactory;
-    private Enemy _targetEnemie;
+    private Enemy _targetEnemy;
     private GameSaver _gameSaver;
     private SignalBus _signalBus;
     private float _shootTime;
     private float _shootRadius;
+    private bool _isShooting = true;
 
     [Inject]
     public void Construct(GameSaver gameSaver, SignalBus signalBus) {
@@ -23,7 +24,7 @@ public class Tower : MonoBehaviour
 
     public void Init(EnemiesFactory enemiesFactory) {
         _enemiesFactory = enemiesFactory;
-        _targetEnemie = _enemiesFactory.ChangeRandomEnemie();
+        _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
         SubscribeSignal();
         UpdateShootTime();
         UpdateRadius();
@@ -31,24 +32,29 @@ public class Tower : MonoBehaviour
     }
 
     private async void Shoot(SignalNewWave signalNewWave = null) {
-        await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
+        if (_isShooting) {
+            await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
 
-        if (signalNewWave != null) {
-            _targetEnemie = signalNewWave.TargetEnemy;
+            if (signalNewWave != null) {
+                _targetEnemy = signalNewWave.TargetEnemy;
+            }
+
+            while (_targetEnemy != null && _isShooting) {
+                if (Vector3.Distance(transform.position, _targetEnemy.transform.position) > _shootRadius) {
+                    _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
+                    continue;
+                }
+                else {
+                    Bullet bullet = Instantiate(_bulletPrefab, _startShootTransform.position, _startShootTransform.rotation);
+                    bullet.Init(_gameSaver, _targetEnemy.transform.position);
+                    await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
+                    _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
+                }
+            }
         }
-
-        while (_targetEnemie != null) {
-            if (Vector3.Distance(transform.position, _targetEnemie.transform.position) > _shootRadius) {
-                _targetEnemie = _enemiesFactory.ChangeRandomEnemie();
-                await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
-                continue;
-            }
-            else {
-                Bullet bullet = Instantiate(_bulletPrefab, _startShootTransform.position, _startShootTransform.rotation);
-                bullet.Init(_gameSaver, _targetEnemie.transform.position);
-                await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
-                _targetEnemie = _enemiesFactory.ChangeRandomEnemie();
-            }
+        else {
+            return;
         }
     }
 
@@ -60,14 +66,15 @@ public class Tower : MonoBehaviour
         _signalBus.Subscribe<SignalNewWave>(Shoot);
         _signalBus.Subscribe<SignalUpdateRadius>(UpdateRadius);
         _signalBus.Subscribe<SignalUpdateShootTime>(UpdateShootTime);
+        _signalBus.Subscribe<SignalGameOver>(StopShooting);
+    }
+
+    private void StopShooting() {
+        _isShooting = false;
     }
 
     private void UpdateRadius() {
         _shootRadius = _gameSaver.GetTowerRadius();
         _circleRenderer.Init(_shootRadius);
-    }
-
-    private void OnDestroy() {
-        _signalBus.Unsubscribe<SignalNewWave>(Shoot);
     }
 }

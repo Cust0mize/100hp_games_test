@@ -9,6 +9,10 @@ public class MoveToTarget : MonoBehaviour
         _targetPosition = targetPosition;
     }
 
+    public void StopMove() {
+        _speed = 0;
+    }
+
     private void Update() {
         MoveToTower();
     }

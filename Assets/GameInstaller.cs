@@ -4,12 +4,19 @@ using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
+    [SerializeField] private UIRoot uiRoot;
+
     public override void InstallBindings() {
         BindBaseSceneDependencies();
         BindSkillDependencies();
         //BindMemoryPools();
         BindSignals();
-        //BindUI();
+        BindUI();
+    }
+
+    private void BindUI() {
+        Container.Bind<UIRoot>().FromInstance(uiRoot).AsSingle();
+
     }
 
     private void BindSkillDependencies() {

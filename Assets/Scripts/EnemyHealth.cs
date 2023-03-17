@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class EnemieHealth : MonoBehaviour, IDamageble
+public class EnemyHealth : MonoBehaviour, IDamageble
 {
     [SerializeField] private float _health = 1;
     private SignalBus _signalBus;

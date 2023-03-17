@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class LowButtonItem : MonoBehaviour
+public class ButtonBuySkill : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private TextMeshProUGUI _price;

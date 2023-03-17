@@ -23,7 +23,7 @@ public class RadiusSkill : ISkill
 
     public bool Upgrade() {
         if (_level < _maxLevel) {
-            _gameSaver.SetTowerRadius(_gameSaver.GetTowerRadius() * 1.5f);
+            _gameSaver.SetTowerRadius(_gameSaver.GetTowerRadius() * 1.3f);
             _gameSaver.SetCurrentCoint(_level * -_defaultPrice);
             _signalBus.Fire<SignalUpdateRadius>();
             _gameSaver.SetRadiusTowerLevel(_level);

@@ -8,10 +8,10 @@ public class UpgradeButtons : MonoBehaviour
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _radiusButton;
     [SerializeField] private Button _shootTimeButton;
-    [SerializeField] private List<LowButtonItem> _buttonLists;
+    [SerializeField] private List<ButtonBuySkill> _buttonsBuySkill;
 
     private ISkill _currentSkill;
-    private LowButtonItem _currentButtonelement;
+    private ButtonBuySkill _currentButtonelement;
     private GameSaver _gameSaver;
     private SignalBus _signalBus;
 
@@ -64,9 +64,9 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void SearchCurrentButtonItem() {
-        for (int i = 0; i < _buttonLists.Count; i++) {
-            if (_buttonLists[i].SkillType == _currentSkill.Type) {
-                _currentButtonelement = _buttonLists[i];
+        for (int i = 0; i < _buttonsBuySkill.Count; i++) {
+            if (_buttonsBuySkill[i].SkillType == _currentSkill.Type) {
+                _currentButtonelement = _buttonsBuySkill[i];
             }
         }
     }
@@ -78,10 +78,10 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void UpdateAllText(params ISkill[] skill) {
-        for (int i = 0; i < _buttonLists.Count; i++) {
+        for (int i = 0; i < _buttonsBuySkill.Count; i++) {
             for (int j = 0; j < skill.Length; j++) {
-                if (_buttonLists[i].SkillType == skill[j].Type) {
-                    _buttonLists[i].UpdateElement(skill[j]);
+                if (_buttonsBuySkill[i].SkillType == skill[j].Type) {
+                    _buttonsBuySkill[i].UpdateElement(skill[j]);
                 }
             }
         }

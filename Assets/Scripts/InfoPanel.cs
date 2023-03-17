@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
-public class InfoPanel : MonoBehaviour
+public class InfoPanel : AbstractPanel
 {
     [SerializeField] private TextMeshProUGUI _coinValue;
     private SignalBus _signalBus;
@@ -14,10 +14,6 @@ public class InfoPanel : MonoBehaviour
         _signalBus = signalBus;
         _signalBus.Subscribe<SignalUpdateCoinValue>(UpdateCoinValue);
         _coinValue.text = _gameSaver.GetCurrentCoins().ToString();
-    }
-
-    private void Start() {
-
     }
 
     private void UpdateCoinValue() {

@@ -9,9 +9,9 @@ public class GameStarter : MonoBehaviour
     private SignalBus _signalBus;
 
     [Inject]
-    public void Construct(GameSaver gameSaver, SignalBus signalBus) {
+    public void Construct(GameSaver gameSaver, SignalBus signalBus, UIRoot uIRoot) {
         _signalBus = signalBus;
-        GameController gameController = new GameController(gameSaver, _signalBus);
+        GameController gameController = new GameController(gameSaver, _signalBus, uIRoot);
     }
 
     private void Start() {

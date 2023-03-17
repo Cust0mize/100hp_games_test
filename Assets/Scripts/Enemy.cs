@@ -3,7 +3,7 @@ using Zenject;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemieHealth _health;
+    [SerializeField] private EnemyHealth _health;
     [SerializeField] private MoveToTarget _moveToTarget;
     [SerializeField] private float _rewardForKill = 1;
     private SignalBus _signalBus;
@@ -18,9 +18,12 @@ public class Enemy : MonoBehaviour
         return _rewardForKill;
     }
 
+    public void Stop() {
+        _moveToTarget.StopMove();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.GetComponent<Tower>()) {
-
             _signalBus.Fire<SignalGameOver>();
         }
     }
