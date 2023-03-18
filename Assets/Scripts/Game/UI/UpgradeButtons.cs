@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Zenject;
-using System.Collections.Generic;
 
 public class UpgradeButtons : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class UpgradeButtons : MonoBehaviour
 
     private void Start() {
         SubscribeButton();
-        UpdateAllText(_skillService.GetShootTimeSkill(), _skillService.GetAttackSkill(), _skillService.GetRadiusSkill());
+        UpdateAllText(_skillService.GetSkill(SkillType.AttackSkill), _skillService.GetSkill(SkillType.TimeShootSkill), _skillService.GetSkill(SkillType.RadiusSkill));
     }
 
     private void TryUpgradeCurrentSkill() {
@@ -39,17 +39,17 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void OnUpgradeShootTime() {
-        _currentSkill = _skillService.GetShootTimeSkill();
+        _currentSkill = _skillService.GetSkill(SkillType.TimeShootSkill);
         TryUpgradeCurrentSkill();
     }
 
     private void OnUpgradeRadius() {
-        _currentSkill = _skillService.GetRadiusSkill();
+        _currentSkill = _skillService.GetSkill(SkillType.RadiusSkill);
         TryUpgradeCurrentSkill();
     }
 
     private void OnUpgradeAttack() {
-        _currentSkill = _skillService.GetAttackSkill();
+        _currentSkill = _skillService.GetSkill(SkillType.AttackSkill);
         TryUpgradeCurrentSkill();
     }
 

@@ -11,6 +11,6 @@ public class EnemyMove : MoveToTarget
     }
 
     public void StartMove() {
-        CurrentSpeed = Speed;
+        CurrentSpeed = GetSpeed();
     }
 }

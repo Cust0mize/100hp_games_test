@@ -1,30 +1,27 @@
-﻿using Zenject;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Zenject;
 
 public class SkillService
 {
-    private ShootTimeSkill _shootTimeSkill;
-    private AttackSkill _attackSkill;
-    private RadiusSkill _radiusSkill;
+    HashSet<ISkill> _skills = new HashSet<ISkill>();
 
     [Inject]
     public SkillService(ShootTimeSkill shootTimeSkill, AttackSkill attackSkill, RadiusSkill radiusSkill) {
-        _shootTimeSkill = shootTimeSkill;
-        _attackSkill = attackSkill;
-        _radiusSkill = radiusSkill;
+        AddSkills(shootTimeSkill, attackSkill, radiusSkill);
     }
 
-    public ShootTimeSkill GetShootTimeSkill()
-    {
-        return _shootTimeSkill;
-    }    
-    
-    public AttackSkill GetAttackSkill()
-    {
-        return _attackSkill;
-    }    
-    
-    public RadiusSkill GetRadiusSkill()
-    {
-        return _radiusSkill;
+    public ISkill GetSkill(SkillType skillType) {
+        ISkill result = null;
+        foreach (var skillElement in _skills) {
+            if (skillType == skillElement.SkillType) {
+                result = skillElement;
+            }
+        }
+        return result;
+    }
+
+    private void AddSkills(params ISkill[] skills) {
+        _skills = skills.ToHashSet();
     }
 }

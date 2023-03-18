@@ -11,13 +11,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _rewardForKill = 1;
     private SignalBus _signalBus;
     private bool _isCollisionEnemy;
+    private float _timeCollisionDetection = 20;
 
     public async UniTask<bool> Init(SignalBus signalBus, Vector3 targetPosition) {
         _spriteRenderer.enabled = false;
         _signalBus = signalBus;
         _enemyMove.Init(targetPosition);
         _health.Init(signalBus, this);
-        await UniTask.Delay(TimeSpan.FromMilliseconds(20));
+        await UniTask.Delay(TimeSpan.FromMilliseconds(_timeCollisionDetection));
         return _isCollisionEnemy;
     }
 
