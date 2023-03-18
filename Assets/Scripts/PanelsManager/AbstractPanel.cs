@@ -1,15 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Zenject;
 
 public abstract class AbstractPanel : MonoBehaviour
 {
     [SerializeField] protected RectTransform _animationTransform;
     private float _scale = 1f;
 
-    public virtual void Show(System.Action onComplete) {
+    public virtual void Show(Action onComplete) {
         gameObject.SetActive(true);
 
         if (_animationTransform == null) {
@@ -22,7 +20,7 @@ public abstract class AbstractPanel : MonoBehaviour
 
     }
 
-    public virtual void Hide(System.Action onComplete) {
+    public virtual void Hide(Action onComplete) {
 
         if (_animationTransform == null) {
             onComplete?.Invoke();
@@ -34,7 +32,7 @@ public abstract class AbstractPanel : MonoBehaviour
         StartCoroutine(IE_Hiding(onComplete));
     }
 
-    private IEnumerator IE_Showing(System.Action onComplete) {
+    private IEnumerator IE_Showing(Action onComplete) {
         _scale = 0.5f;
 
         while (_scale < 1f) {
@@ -48,7 +46,7 @@ public abstract class AbstractPanel : MonoBehaviour
         onComplete?.Invoke();
     }
 
-    private IEnumerator IE_Hiding(System.Action onComplete) {
+    private IEnumerator IE_Hiding(Action onComplete) {
         _scale = 1f;
 
         while (_scale > 0.5f) {

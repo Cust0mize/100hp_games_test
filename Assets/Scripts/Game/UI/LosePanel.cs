@@ -13,7 +13,7 @@ public class LosePanel : AbstractPanel
     }
 
     private void RestartGame() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         PlayerPrefs.DeleteAll();
     }
 }

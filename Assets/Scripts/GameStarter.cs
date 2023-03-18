@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class GameStarter : MonoBehaviour
@@ -7,11 +6,12 @@ public class GameStarter : MonoBehaviour
     [SerializeField] private EnemiesFactory _enemysFactory;
     [SerializeField] private Tower _tower;
     private SignalBus _signalBus;
+    private UIRoot _uiRoot;
 
     [Inject]
-    public void Construct(GameSaver gameSaver, SignalBus signalBus, UIRoot uIRoot) {
+    public void Construct(SignalBus signalBus, UIRoot uIRoot) {
         _signalBus = signalBus;
-        GameController gameController = new GameController(gameSaver, _signalBus, uIRoot);
+        _uiRoot = uIRoot;
     }
 
     private void Start() {
@@ -26,11 +26,11 @@ public class GameStarter : MonoBehaviour
     private void StartGame() {
         _enemysFactory.Init(_tower);
         _tower.Init(_enemysFactory);
-
-        _signalBus.Subscribe<SignalGameOver>(StopGame);
+        _signalBus.Subscribe<SignalGameOver>(EndGame);
     }
 
-    private void StopGame() {
-        _signalBus.Unsubscribe<SignalGameOver>(StopGame);
+    private void EndGame() {
+        _signalBus.Unsubscribe<SignalGameOver>(EndGame);
+        _uiRoot.ShowPanel<LosePanel>();
     }
 }

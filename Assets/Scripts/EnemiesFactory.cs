@@ -11,13 +11,15 @@ public class EnemiesFactory : MonoBehaviour
     private Tower _tower;
     private SignalBus _signalBus;
     private GameSaver _gameSaver;
+    private MoneyService _moneyService;
     private int _waweNumber;
     private bool _isFirstBoot = true;
 
     [Inject]
-    public void Construct(SignalBus signalBus, GameSaver gameSaver) {
+    public void Construct(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) {
         _signalBus = signalBus;
         _gameSaver = gameSaver;
+        _moneyService = moneyService;
         _waweNumber = _gameSaver.GetWaweNumber();
     }
 
@@ -69,6 +71,7 @@ public class EnemiesFactory : MonoBehaviour
 
     private void RemoveEnemie(SignalRemoveEnemy signalRemoveEnemy) {
         _enemies.Remove(signalRemoveEnemy.Enemy);
+        _moneyService.AddCoinForEnemyKill(signalRemoveEnemy.Enemy);
 
         if (_enemies.Count == 0) {
             _enemies.Clear();

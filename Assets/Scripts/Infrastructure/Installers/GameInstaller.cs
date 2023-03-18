@@ -30,6 +30,7 @@ public class GameInstaller : MonoInstaller
         Container.DeclareSignal<SignalGameOver>();
         Container.DeclareSignal<SignalNewWave>();
         Container.DeclareSignal<SignalRemoveEnemy>();
+
         Container.DeclareSignal<SignalUpdateRadius>();
         Container.DeclareSignal<SignalUpdateShootTime>();
         Container.DeclareSignal<SignalUpdateCoinValue>();
@@ -37,5 +38,6 @@ public class GameInstaller : MonoInstaller
 
     private void BindBaseSceneDependencies() {
         Container.Bind<GameSaver>().AsSingle();
+        Container.Bind<MoneyService>().AsSingle();
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Zenject;
+using System.Linq;
 
 public class UpgradeButtons : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class UpgradeButtons : MonoBehaviour
     private void TryUpgradeCurrentSkill() {
         if (_gameSaver.GetCurrentCoins() >= _currentSkill.Level * _currentSkill.DefaultPrice) {
             if (_currentSkill.Upgrade()) {
-                _currentSkill.Level++;
                 _signalBus.Fire<SignalUpdateCoinValue>();
                 UpdateText();
             }
@@ -59,11 +59,7 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void SearchCurrentButtonItem() {
-        for (int i = 0; i < _buttonsBuySkill.Count; i++) {
-            if (_buttonsBuySkill[i].GetSkillType() == _currentSkill.SkillType) {
-                _currentButtonElement = _buttonsBuySkill[i];
-            }
-        }
+        _currentButtonElement = _buttonsBuySkill.FirstOrDefault(x => x.GetSkillType() == _currentSkill.SkillType);
     }
 
     private void SubscribeButton() {

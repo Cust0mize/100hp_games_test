@@ -29,7 +29,6 @@ public class GameSaver
     }
 
     internal void SetRadiusTowerLevel(int level) {
-        level++;
         PlayerPrefs.SetInt(_radiusLevel, level);
     }
 

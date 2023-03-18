@@ -15,11 +15,18 @@ public class Enemy : MonoBehaviour
 
     public async UniTask<bool> Init(SignalBus signalBus, Vector3 targetPosition) {
         _spriteRenderer.enabled = false;
-        _signalBus = signalBus;
-        _enemyMove.Init(targetPosition);
-        _health.Init(signalBus, this);
+
         await UniTask.Delay(TimeSpan.FromMilliseconds(_timeCollisionDetection));
-        return _isCollisionEnemy;
+
+        if (_isCollisionEnemy) {
+            return true;
+        }
+        else {
+            _signalBus = signalBus;
+            _enemyMove.Init(targetPosition);
+            _health.Init(signalBus, this);
+            return false;
+        }
     }
 
     public float GetReward() {
