@@ -2,13 +2,17 @@
 
 public class MoveToTarget : MonoBehaviour
 {
-    [field: SerializeField] protected float Speed { get; private set; } = 3;
+    [SerializeField] private float _speed = 3;
     protected float CurrentSpeed;
     protected Vector3 TargetPosition;
 
     public virtual void Init(Vector3 targetPosition) {
         TargetPosition = targetPosition;
-        CurrentSpeed = Speed;
+        CurrentSpeed = _speed;
+    }
+
+    protected float GetSpeed() {
+        return _speed;
     }
 
     private void Update() {
