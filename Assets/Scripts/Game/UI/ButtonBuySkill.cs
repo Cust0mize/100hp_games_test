@@ -7,7 +7,7 @@ public class ButtonBuySkill : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _price;
     [SerializeField] private SkillType _skillType;
 
-    public void UpdateElement(ISkill skill) {
+    public void UpdateElement(BaseSkill skill) {
         if (skill.Level >= skill.MaxLevel) {
             MaxLevel();
             return;

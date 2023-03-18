@@ -63,7 +63,7 @@ public class Tower : MonoBehaviour
     }
 
     private void UpdateShootTime() {
-        _shootTime = _gameSaver.GetShootTime();
+        _shootTime = _gameSaver.GetSkillValue(SkillType.TimeShootSkill);
     }
 
     private void SubscribeSignal() {
@@ -78,7 +78,7 @@ public class Tower : MonoBehaviour
     }
 
     private void UpdateRadius() {
-        _shootRadius = _gameSaver.GetTowerRadius();
+        _shootRadius = _gameSaver.GetSkillValue(SkillType.RadiusSkill);
         _circleRenderer.Init(_shootRadius);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameSaver
 {
@@ -15,50 +14,9 @@ public class GameSaver
         return PlayerPrefs.GetFloat(_currentCoins, 0);
     }
 
-    public void SetCurrentCoint(float value) {
+    public void SetCurrentCoins(float value) {
         float newCoinsValue = GetCurrentCoins() + value;
         PlayerPrefs.SetFloat(_currentCoins, newCoinsValue);
-    }
-
-    public int GetTowerRadiusLevel() {
-        return PlayerPrefs.GetInt(_radiusLevel, 1);
-    }
-
-    public float GetBulletDamage() {
-        return PlayerPrefs.GetFloat(_bulletDamage, 1);
-    }
-
-    internal void SetRadiusTowerLevel(int level) {
-        PlayerPrefs.SetInt(_radiusLevel, level);
-    }
-
-    public int GetShootTimeSkillLevel() {
-        return PlayerPrefs.GetInt(_shootTimeLevel, 1);
-    }
-
-    public void SetBulletDamage(float value) {
-        PlayerPrefs.SetFloat(_bulletDamage, value);
-    }
-
-    public void SetShootTimeLevel(int level) {
-        level++;
-        PlayerPrefs.SetInt(_shootTimeLevel, level);
-    }
-
-    public float GetTowerRadius() {
-        return PlayerPrefs.GetFloat(_towerRadius, Tower._defaultShootRadius);
-    }
-
-    public void SetTowerRadius(float newRadius) {
-        PlayerPrefs.SetFloat(_towerRadius, newRadius);
-    }
-
-    public float GetShootTime() {
-        return PlayerPrefs.GetFloat(_shootTime, Tower._defaultShootTime);
-    }
-
-    public void SetShootTime(float newRadius) {
-        PlayerPrefs.SetFloat(_shootTime, newRadius);
     }
 
     public int GetWaweNumber() {
@@ -67,5 +25,40 @@ public class GameSaver
 
     public void SetWaweNumber(int value) {
         PlayerPrefs.SetInt(_waweCount, value);
+    }
+
+    public void SetSkillLevel(SkillType skillType, int level) {
+        switch (skillType) {
+            case SkillType.TimeShootSkill: PlayerPrefs.SetInt(_shootTimeLevel, level); break;
+            case SkillType.RadiusSkill: PlayerPrefs.SetInt(_radiusLevel, level); break;
+        }
+    }
+
+    public int GetSkillLevel(SkillType skillType) {
+        int result = 0;
+        switch (skillType) {
+            case SkillType.AttackSkill: result = (int)PlayerPrefs.GetFloat(_bulletDamage, 1); break;
+            case SkillType.TimeShootSkill: result = PlayerPrefs.GetInt(_shootTimeLevel, 1); break;
+            case SkillType.RadiusSkill: result = PlayerPrefs.GetInt(_radiusLevel, 1); break;
+        }
+        return result;
+    }
+
+    public void SetSkillValue(SkillType skillType, float improvementMultiplier) {
+        switch (skillType) {
+            case SkillType.AttackSkill: PlayerPrefs.SetFloat(_bulletDamage, GetSkillValue(skillType) + improvementMultiplier); break;
+            case SkillType.TimeShootSkill: PlayerPrefs.SetFloat(_shootTime, GetSkillValue(skillType) * improvementMultiplier); break;
+            case SkillType.RadiusSkill: PlayerPrefs.SetFloat(_towerRadius, GetSkillValue(skillType) * improvementMultiplier); break;
+        }
+    }
+
+    public float GetSkillValue(SkillType skillType) {
+        float result = 0;
+        switch (skillType) {
+            case SkillType.AttackSkill: result = PlayerPrefs.GetFloat(_bulletDamage, Bullet.DefaultBulletDamage); break;
+            case SkillType.TimeShootSkill: result = PlayerPrefs.GetFloat(_shootTime, Tower._defaultShootTime); break;
+            case SkillType.RadiusSkill: result = PlayerPrefs.GetFloat(_towerRadius, Tower._defaultShootRadius); break;
+        }
+        return result;
     }
 }

@@ -1,37 +1,20 @@
 ﻿using Zenject;
 
-public class ShootTimeSkill : ISkill
+public class ShootTimeSkill : BaseSkill
 {
-    private SignalBus _signalBus;
-    private GameSaver _gameSaver;
-    private MoneyService _moneyService;
-    private SkillType _skillType = SkillType.TimeShootSkill;
-    private float _improvementMultiplier = 0.75f;
-    private float _defaultPrice = 1;
-    private int _level = 1;
-    private int _maxLevel = 3;
-
-    public float DefaultPrice => _defaultPrice;
-    public int Level => _level;
-    public int MaxLevel => _maxLevel;
-    public SkillType SkillType => _skillType;
-
-    [Inject]
-    public void Construct(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) {
-        _signalBus = signalBus;
-        _gameSaver = gameSaver;
-        _moneyService = moneyService;
-        _level = _gameSaver.GetShootTimeSkillLevel();
+    public ShootTimeSkill(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) : base(signalBus, gameSaver, moneyService) {
     }
 
-    public bool Upgrade() {
-        if (_level < _maxLevel) {
-            _gameSaver.SetShootTime(_gameSaver.GetShootTime() * _improvementMultiplier);
-            _moneyService.RemoveCoinFromSkillBuy(_level * _defaultPrice);
-            _gameSaver.SetShootTimeLevel(_level);
-            _signalBus.Fire<SignalUpdateShootTime>();
-            _level++;
-            _gameSaver.SetShootTimeLevel(_level);
+    public override void SetStartValues() {
+        SkillType = SkillType.TimeShootSkill;
+        ImprovementMultiplier = 0.75f;
+        DefaultPrice = 1;
+        MaxLevel = 3;
+    }
+
+    public override bool Upgrade() {
+        if (base.Upgrade()) {
+            SignalBus.Fire<SignalUpdateShootTime>();
             return true;
         }
         return false;

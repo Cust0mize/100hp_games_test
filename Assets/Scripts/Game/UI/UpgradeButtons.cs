@@ -6,16 +6,16 @@ using System.Linq;
 
 public class UpgradeButtons : MonoBehaviour
 {
+    [SerializeField] private List<ButtonBuySkill> _buttonsBuySkill;
+    [SerializeField] private Button _shootTimeButton;
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _radiusButton;
-    [SerializeField] private Button _shootTimeButton;
-    [SerializeField] private List<ButtonBuySkill> _buttonsBuySkill;
 
-    private ISkill _currentSkill;
     private ButtonBuySkill _currentButtonElement;
+    private SkillService _skillService;
+    private BaseSkill _currentSkill;
     private GameSaver _gameSaver;
     private SignalBus _signalBus;
-    private SkillService _skillService;
 
     [Inject]
     public void Construct(GameSaver gameSaver, SignalBus signalBus, SkillService skillService) {
@@ -68,7 +68,7 @@ public class UpgradeButtons : MonoBehaviour
         _shootTimeButton.onClick.AddListener(OnUpgradeShootTime);
     }
 
-    private void UpdateAllText(params ISkill[] skill) {
+    private void UpdateAllText(params BaseSkill[] skill) {
         for (int i = 0; i < _buttonsBuySkill.Count; i++) {
             for (int j = 0; j < skill.Length; j++) {
                 if (_buttonsBuySkill[i].GetSkillType() == skill[j].SkillType) {

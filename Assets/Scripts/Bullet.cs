@@ -6,11 +6,13 @@ public class Bullet : MonoBehaviour
     [SerializeField] private MoveToTarget _moveToTarget;
     [SerializeField] private float _damage;
 
-    public static float _defaultBulletDamage { get; private set; }
+    public static float DefaultBulletDamage { get; private set; }
 
     public void Init(GameSaver gameSaver, Vector3 targetPosition) {
+        DefaultBulletDamage = _damage;
+
         _moveToTarget.Init(targetPosition);
-        _damage = gameSaver.GetBulletDamage();
+        _damage = gameSaver.GetSkillValue(SkillType.AttackSkill);
         Destroy(gameObject, 3f);
     }
 
