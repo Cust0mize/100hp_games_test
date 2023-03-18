@@ -1,36 +1,20 @@
 ﻿using Zenject;
 
-public class RadiusSkill : ISkill
+public class RadiusSkill : BaseSkill
 {
-    private MoneyService _moneyService;
-    private SignalBus _signalBus;
-    private GameSaver _gameSaver;
-    private SkillType _skillType = SkillType.RadiusSkill;
-    private float _improvementMultiplier = 1.3f;
-    private float _defaultPrice = 1;
-    private int _level = 1;
-    private int _maxLevel = 3;
-
-    public int Level => _level;
-    public float DefaultPrice => _defaultPrice;
-    public int MaxLevel => _maxLevel;
-    public SkillType SkillType => _skillType;
-
-    [Inject]
-    public void Construct(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) {
-        _signalBus = signalBus;
-        _gameSaver = gameSaver;
-        _moneyService = moneyService;
-        _level = _gameSaver.GetTowerRadiusLevel();
+    public RadiusSkill(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) : base(signalBus, gameSaver, moneyService) {
     }
 
-    public bool Upgrade() {
-        if (_level < _maxLevel) {
-            _gameSaver.SetTowerRadius(_gameSaver.GetTowerRadius() * _improvementMultiplier);
-            _moneyService.RemoveCoinFromSkillBuy(_level * _defaultPrice);
-            _signalBus.Fire<SignalUpdateRadius>();
-            _level++;
-            _gameSaver.SetRadiusTowerLevel(_level);
+    public override void SetStartValues() {
+        SkillType = SkillType.RadiusSkill;
+        ImprovementMultiplier = 1.3f;
+        DefaultPrice = 1;
+        MaxLevel = 3;
+    }
+
+    public override bool Upgrade() {
+        if (base.Upgrade()) {
+            SignalBus.Fire<SignalUpdateRadius>();
             return true;
         }
         return false;

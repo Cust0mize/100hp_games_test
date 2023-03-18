@@ -10,10 +10,10 @@ public class MoneyService
     }
 
     public void AddCoinForEnemyKill(Enemy enemy) {
-        _gameSaver.SetCurrentCoint(enemy.GetReward());
+        _gameSaver.SetCurrentCoins(enemy.GetReward());
     }
 
     public void RemoveCoinFromSkillBuy(float value) {
-        _gameSaver.SetCurrentCoint(-value);
+        _gameSaver.SetCurrentCoins(-value);
     }
 }
