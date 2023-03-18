@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Random = UnityEngine.Random;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
-using System;
 using Zenject;
 
 public class EnemiesFactory : MonoBehaviour
@@ -10,7 +8,6 @@ public class EnemiesFactory : MonoBehaviour
     [SerializeField] private List<Transform> _spawnZones;
     [SerializeField] private Enemy _enemyPrefab;
     private List<Enemy> _enemies = new List<Enemy>();
-    private Enemy _oldEnemy;
     private Tower _tower;
     private SignalBus _signalBus;
     private GameSaver _gameSaver;
@@ -51,22 +48,7 @@ public class EnemiesFactory : MonoBehaviour
 
     public Enemy ChangeRandomEnemie() {
         if (_enemies.Count == 0) return null;
-        Enemy newEnemy = null;
-        int tryCount = 0;
-        do {
-            newEnemy = _enemies[Random.Range(0, _enemies.Count)];
-
-            if (newEnemy == _oldEnemy) {
-                tryCount++;
-                if (tryCount == 5) {
-                    break;
-                }
-            }
-            else {
-                tryCount = 0;
-            }
-        } while (newEnemy == _oldEnemy);
-        _oldEnemy = newEnemy;
+        Enemy newEnemy = _enemies[Random.Range(0, _enemies.Count)];
         return newEnemy;
     }
 

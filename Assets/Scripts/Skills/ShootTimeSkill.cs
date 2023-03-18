@@ -12,7 +12,7 @@ public class ShootTimeSkill : ISkill
     public float DefaultPrice => _defaultPrice;
     public int Level { get => _level; set => _level = value; }
     public int MaxLevel => _maxLevel;
-    public SkillType Type => _skillType;
+    public SkillType SkillType => _skillType;
 
     [Inject]
     public void Construct(SignalBus signalBus, GameSaver gameSaver) {

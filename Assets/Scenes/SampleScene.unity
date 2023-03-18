@@ -744,7 +744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level: {fileID: 742519381}
   _price: {fileID: 2123916519}
-  SkillType: 1
+  _skillType: 1
 --- !u!114 &683746638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,7 +997,6 @@ MonoBehaviour:
   - {fileID: 1609836300}
   - {fileID: 840165321}
   _enemyPrefab: {fileID: 8791334730844084039, guid: b3fa4d6773fe90545b317c9bb2035b48, type: 3}
-  _timeSpawnDelay: 2
 --- !u!4 &774025087
 Transform:
   m_ObjectHideFlags: 0
@@ -2051,7 +2050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level: {fileID: 1428208778}
   _price: {fileID: 1927626616}
-  SkillType: 0
+  _skillType: 0
 --- !u!1 &1543125671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,7 +2582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level: {fileID: 597620092}
   _price: {fileID: 2140265142}
-  SkillType: 2
+  _skillType: 2
 --- !u!114 &1874958640
 MonoBehaviour:
   m_ObjectHideFlags: 0

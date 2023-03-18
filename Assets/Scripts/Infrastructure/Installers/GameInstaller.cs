@@ -15,10 +15,10 @@ public class GameInstaller : MonoInstaller
 
     private void BindUI() {
         Container.Bind<UIRoot>().FromInstance(uiRoot).AsSingle();
-
     }
 
     private void BindSkillDependencies() {
+        Container.Bind<SkillService>().AsSingle();
         Container.Bind<AttackSkill>().AsSingle();
         Container.Bind<RadiusSkill>().AsSingle();
         Container.Bind<ShootTimeSkill>().AsSingle();
@@ -36,8 +36,6 @@ public class GameInstaller : MonoInstaller
     }
 
     private void BindBaseSceneDependencies() {
-
         Container.Bind<GameSaver>().AsSingle();
-
     }
 }

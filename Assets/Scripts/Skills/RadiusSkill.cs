@@ -12,7 +12,7 @@ public class RadiusSkill : ISkill
     public int Level { get => _level; set => _level = value; }
     public float DefaultPrice => _defaultPrice;
     public int MaxLevel => _maxLevel;
-    public SkillType Type => _skillType;
+    public SkillType SkillType => _skillType;
 
     [Inject]
     public void Construct(SignalBus signalBus, GameSaver gameSaver) {

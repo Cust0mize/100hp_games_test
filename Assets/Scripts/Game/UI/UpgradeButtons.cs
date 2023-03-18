@@ -11,26 +11,21 @@ public class UpgradeButtons : MonoBehaviour
     [SerializeField] private List<ButtonBuySkill> _buttonsBuySkill;
 
     private ISkill _currentSkill;
-    private ButtonBuySkill _currentButtonelement;
+    private ButtonBuySkill _currentButtonElement;
     private GameSaver _gameSaver;
     private SignalBus _signalBus;
-
-    private ShootTimeSkill _shootTimeSkill;
-    private AttackSkill _attackSkill;
-    private RadiusSkill _radiusSkill;
+    private SkillService _skillService;
 
     [Inject]
-    public void Construct(GameSaver gameSaver, SignalBus signalBus, ShootTimeSkill shootTimeSkill, AttackSkill attackSkill, RadiusSkill radiusSkill) {
+    public void Construct(GameSaver gameSaver, SignalBus signalBus, SkillService skillService) {
         _gameSaver = gameSaver;
         _signalBus = signalBus;
-        _shootTimeSkill = shootTimeSkill;
-        _attackSkill = attackSkill;
-        _radiusSkill = radiusSkill;
+        _skillService = skillService;
     }
 
     private void Start() {
         SubscribeButton();
-        UpdateAllText(_shootTimeSkill, _attackSkill, _radiusSkill);
+        UpdateAllText(_skillService.GetShootTimeSkill(), _skillService.GetAttackSkill(), _skillService.GetRadiusSkill());
     }
 
     private void TryUpgradeCurrentSkill() {
@@ -44,29 +39,29 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void OnUpgradeShootTime() {
-        _currentSkill = _shootTimeSkill;
+        _currentSkill = _skillService.GetShootTimeSkill();
         TryUpgradeCurrentSkill();
     }
 
     private void OnUpgradeRadius() {
-        _currentSkill = _radiusSkill;
+        _currentSkill = _skillService.GetRadiusSkill();
         TryUpgradeCurrentSkill();
     }
 
     private void OnUpgradeAttack() {
-        _currentSkill = _attackSkill;
+        _currentSkill = _skillService.GetAttackSkill();
         TryUpgradeCurrentSkill();
     }
 
     private void UpdateText() {
         SearchCurrentButtonItem();
-        _currentButtonelement.UpdateElement(_currentSkill);
+        _currentButtonElement.UpdateElement(_currentSkill);
     }
 
     private void SearchCurrentButtonItem() {
         for (int i = 0; i < _buttonsBuySkill.Count; i++) {
-            if (_buttonsBuySkill[i].SkillType == _currentSkill.Type) {
-                _currentButtonelement = _buttonsBuySkill[i];
+            if (_buttonsBuySkill[i].GetSkillType() == _currentSkill.SkillType) {
+                _currentButtonElement = _buttonsBuySkill[i];
             }
         }
     }
@@ -80,7 +75,7 @@ public class UpgradeButtons : MonoBehaviour
     private void UpdateAllText(params ISkill[] skill) {
         for (int i = 0; i < _buttonsBuySkill.Count; i++) {
             for (int j = 0; j < skill.Length; j++) {
-                if (_buttonsBuySkill[i].SkillType == skill[j].Type) {
+                if (_buttonsBuySkill[i].GetSkillType() == skill[j].SkillType) {
                     _buttonsBuySkill[i].UpdateElement(skill[j]);
                 }
             }
