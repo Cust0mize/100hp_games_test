@@ -22,6 +22,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<AttackSkill>().AsSingle();
         Container.Bind<RadiusSkill>().AsSingle();
         Container.Bind<ShootTimeSkill>().AsSingle();
+        Container.Bind<ResourceLoader>().AsSingle();
     }
 
     private void BindSignals() {
