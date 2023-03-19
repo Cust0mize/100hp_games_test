@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
 using UnityEngine;
 using Zenject;
+using System;
 
 public class Enemy : MonoBehaviour
 {
@@ -13,20 +13,16 @@ public class Enemy : MonoBehaviour
     private bool _isCollisionEnemy;
     private float _timeCollisionDetection = 20;
 
-    public async UniTask<bool> Init(SignalBus signalBus, Vector3 targetPosition) {
+    public void Init(SignalBus signalBus, Vector3 targetPosition) {
+        _signalBus = signalBus;
+        _enemyMove.Init(targetPosition);
+        _health.Init(signalBus, this);
+    }
+
+    public async UniTask<bool> CheckCollision() {
         _spriteRenderer.enabled = false;
-
         await UniTask.Delay(TimeSpan.FromMilliseconds(_timeCollisionDetection));
-
-        if (_isCollisionEnemy) {
-            return true;
-        }
-        else {
-            _signalBus = signalBus;
-            _enemyMove.Init(targetPosition);
-            _health.Init(signalBus, this);
-            return false;
-        }
+        return _isCollisionEnemy;
     }
 
     public float GetReward() {
@@ -34,10 +30,12 @@ public class Enemy : MonoBehaviour
     }
 
     public void Stop() {
+        _health.enabled = false;
         _enemyMove.StopMove();
-    }    
-    
+    }
+
     public void StartMove() {
+        _health.enabled = true;
         _spriteRenderer.enabled = true;
         _enemyMove.StartMove();
     }

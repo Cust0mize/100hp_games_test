@@ -1,25 +1,27 @@
-﻿using System.Collections.Generic;
-using Random = UnityEngine.Random;
+﻿using Random = UnityEngine.Random;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class EnemiesFactory : MonoBehaviour
 {
     [SerializeField] private List<Transform> _spawnZones;
-    [SerializeField] private Enemy _enemyPrefab;
     private List<Enemy> _enemies = new List<Enemy>();
     private Tower _tower;
     private SignalBus _signalBus;
     private GameSaver _gameSaver;
     private MoneyService _moneyService;
+    private ResourceLoader _resourceLoader;
     private int _waweNumber;
     private bool _isFirstBoot = true;
+    private bool _isInitEnemyEnd = false;
 
     [Inject]
-    public void Construct(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService) {
+    public void Construct(SignalBus signalBus, GameSaver gameSaver, MoneyService moneyService, ResourceLoader resourceLoader) {
         _signalBus = signalBus;
         _gameSaver = gameSaver;
         _moneyService = moneyService;
+        _resourceLoader = resourceLoader;
         _waweNumber = _gameSaver.GetWaweNumber();
     }
 
@@ -32,24 +34,33 @@ public class EnemiesFactory : MonoBehaviour
 
     public async void CreateEnemies() {
         _gameSaver.SetWaweNumber(_waweNumber);
+        _isInitEnemyEnd = false;
 
         for (int i = 0; i < _waweNumber; i++) {
-            Enemy enemy = Instantiate(_enemyPrefab, SpawnTo(), Quaternion.identity);
+            GameObject newObject = Instantiate(ChangeEnemy(), SpawnTo(), Quaternion.identity);
+            Enemy enemy = newObject.GetComponent<Enemy>();
 
-            if (await enemy.Init(_signalBus, _tower.transform.position)) {
+            if (await enemy.CheckCollision()) {
                 Destroy(enemy.gameObject);
                 i--;
             }
             else {
+                if (_enemies.Count > _waweNumber) {
+                    Destroy(enemy.gameObject);
+                    continue;
+                }
+                enemy.Init(_signalBus, _tower.transform.position);
                 enemy.Stop();
                 _enemies.Add(enemy);
             }
         }
+        _isInitEnemyEnd = true;
         StartNewWave();
     }
 
     public Enemy ChangeRandomEnemie() {
-        if (_enemies.Count == 0) return null;
+        if (_enemies.Count == 0 || !_isInitEnemyEnd) return null;
+
         Enemy newEnemy = _enemies[Random.Range(0, _enemies.Count)];
         return newEnemy;
     }
@@ -90,5 +101,22 @@ public class EnemiesFactory : MonoBehaviour
             _isFirstBoot = false;
             _signalBus.Fire(new SignalNewWave(_enemies[Random.Range(0, _enemies.Count)]));
         }
+    }
+
+    private GameObject ChangeEnemy() {
+        GameObject enemy = null;
+        if (_waweNumber >= 5) {
+            int randomIndex = Random.Range(0, 2);
+            if (randomIndex == 0) {
+                enemy = _resourceLoader.GetEnemy("StandartEnemy");
+            }
+            else {
+                enemy = _resourceLoader.GetEnemy("EnemySinusMove");
+            }
+        }
+        else {
+            enemy = _resourceLoader.GetEnemy("StandartEnemy");
+        }
+        return enemy;
     }
 }

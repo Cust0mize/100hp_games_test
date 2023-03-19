@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq;
 using UnityEngine;
 using Zenject;
-using System.Linq;
 
 public class UpgradeButtons : MonoBehaviour
 {
@@ -54,12 +54,8 @@ public class UpgradeButtons : MonoBehaviour
     }
 
     private void UpdateText() {
-        SearchCurrentButtonItem();
-        _currentButtonElement.UpdateElement(_currentSkill);
-    }
-
-    private void SearchCurrentButtonItem() {
         _currentButtonElement = _buttonsBuySkill.FirstOrDefault(x => x.GetSkillType() == _currentSkill.SkillType);
+        _currentButtonElement.UpdateElement(_currentSkill);
     }
 
     private void SubscribeButton() {

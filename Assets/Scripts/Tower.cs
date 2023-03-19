@@ -39,15 +39,17 @@ public class Tower : MonoBehaviour
         Shoot();
     }
 
-    private async void Shoot(SignalNewWave signalNewWave = null) {
+    private async void Shoot() {
         if (_isShooting) {
             await UniTask.Delay(TimeSpan.FromSeconds(_shootTime));
 
-            if (signalNewWave != null) {
-                _targetEnemy = signalNewWave.TargetEnemy;
-            }
+            while (_isShooting) {
+                if (_targetEnemy == null) {
+                    _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
+                    continue;
+                }
 
-            while (_targetEnemy != null && _isShooting) {
                 if (Vector3.Distance(transform.position, _targetEnemy.transform.position) > _shootRadius) {
                     _targetEnemy = _enemiesFactory.ChangeRandomEnemie();
                     await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
@@ -67,7 +69,6 @@ public class Tower : MonoBehaviour
     }
 
     private void SubscribeSignal() {
-        _signalBus.Subscribe<SignalNewWave>(Shoot);
         _signalBus.Subscribe<SignalUpdateRadius>(UpdateRadius);
         _signalBus.Subscribe<SignalUpdateShootTime>(UpdateShootTime);
         _signalBus.Subscribe<SignalGameOver>(StopShooting);

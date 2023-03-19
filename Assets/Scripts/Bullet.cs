@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class Bullet : MonoBehaviour
 
         _moveToTarget.Init(targetPosition);
         _damage = gameSaver.GetSkillValue(SkillType.AttackSkill);
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 1f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

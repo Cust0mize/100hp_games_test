@@ -9,6 +9,7 @@ public class MoveToTarget : MonoBehaviour
     public virtual void Init(Vector3 targetPosition) {
         TargetPosition = targetPosition;
         CurrentSpeed = _speed;
+        TargetPosition = targetPosition - transform.position;
     }
 
     protected float GetSpeed() {
@@ -19,9 +20,7 @@ public class MoveToTarget : MonoBehaviour
         Move();
     }
 
-    private void Move() {
-        Vector3 direction = TargetPosition - transform.position;
-        Vector3 newPosition = direction.normalized * CurrentSpeed * Time.deltaTime;
-        transform.position += newPosition;
+    protected virtual void Move() {
+        transform.position += TargetPosition.normalized * CurrentSpeed * Time.deltaTime;
     }
 }
