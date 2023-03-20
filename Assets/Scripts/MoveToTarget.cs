@@ -3,24 +3,17 @@
 public class MoveToTarget : MonoBehaviour
 {
     [SerializeField] private float _speed = 3;
-    protected float CurrentSpeed;
-    protected Vector3 TargetPosition;
+    private Vector3 _targetPosition;
 
-    public virtual void Init(Vector3 targetPosition) {
-        TargetPosition = targetPosition;
-        CurrentSpeed = _speed;
-        TargetPosition = targetPosition - transform.position;
-    }
-
-    protected float GetSpeed() {
-        return _speed;
+    public void Init(Vector3 targetPosition) {
+        _targetPosition = targetPosition - transform.position;
     }
 
     private void Update() {
         Move();
     }
 
-    protected virtual void Move() {
-        transform.position += TargetPosition.normalized * CurrentSpeed * Time.deltaTime;
+    private void Move() {
+        transform.position += _targetPosition.normalized * _speed * Time.deltaTime;
     }
 }

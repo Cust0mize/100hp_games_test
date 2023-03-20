@@ -7,13 +7,14 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private EnemyHealth _health;
-    [SerializeField] private EnemyMove _enemyMove;
     [SerializeField] private float _rewardForKill = 1;
     private SignalBus _signalBus;
     private bool _isCollisionEnemy;
     private float _timeCollisionDetection = 20;
+    private IEnemyMove _enemyMove;
 
     public void Init(SignalBus signalBus, Vector3 targetPosition) {
+        _enemyMove = GetComponent<IEnemyMove>();
         _signalBus = signalBus;
         _enemyMove.Init(targetPosition);
         _health.Init(signalBus, this);

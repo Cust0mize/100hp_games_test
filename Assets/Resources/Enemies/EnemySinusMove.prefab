@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8791334730844084036}
   - component: {fileID: 8791334730844084039}
   - component: {fileID: -6641806338912340478}
-  - component: {fileID: -4049767113338685697}
+  - component: {fileID: -357624721631612483}
   - component: {fileID: -3481529291381823442}
   - component: {fileID: 5287266565917952960}
   m_Layer: 0
@@ -135,7 +135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 8791334730348015204}
   _health: {fileID: -6641806338912340478}
-  _enemyMove: {fileID: -4049767113338685697}
   _rewardForKill: 1
 --- !u!114 &-6641806338912340478
 MonoBehaviour:
@@ -150,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 3
---- !u!114 &-4049767113338685697
+--- !u!114 &-357624721631612483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,13 +161,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7de30da309d8d4ba539b7adeceba85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.5
-  _amplitude: 1.5
-  _frequency: 5
   _smooth: 0.5
   _time: 0
-  _start: {fileID: 0}
-  _target: {fileID: 0}
+  _amplitude: 1.5
+  _frequency: 5
+  _speed: 0.5
 --- !u!58 &-3481529291381823442
 CircleCollider2D:
   m_ObjectHideFlags: 0

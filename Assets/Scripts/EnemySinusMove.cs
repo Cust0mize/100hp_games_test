@@ -1,38 +1,34 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class EnemySinusMove : EnemyMove
+public class EnemySinusMove : MonoBehaviour, IEnemyMove
 {
+    [SerializeField, Range(0.0001f, 0.5f)] private float _smooth = 1f;
+    [SerializeField, Range(0f, 1f)] private float _time = 0;
     [SerializeField] private float _amplitude = 1000;
     [SerializeField] private float _frequency = 0.9f;
+    [SerializeField] private float _speed = 0.4f;
     private float _moveDuration;
+    private Vector3 _targetPosition;
     private Vector3 _startPosition;
     private float _timeDown;
 
-    [SerializeField, Range(0.0001f, 0.5f)] private float _smooth = 1f;
-    [SerializeField, Range(0f, 1f)] private float _time = 0;
-
-    public override void Init(Vector3 targetPosition) {
-        TargetPosition = targetPosition;
+    public void Init(Vector3 targetPosition) {
+        _targetPosition = targetPosition;
         _startPosition = transform.position;
-
+        _moveDuration = Vector2.Distance(_targetPosition, _startPosition) / _speed;
         int randomDirectionIndex = Random.Range(0, 2);
         if (randomDirectionIndex == 0) {
-            _moveDuration = Vector2.Distance(TargetPosition, _startPosition) / GetSpeed();
-        }
-        else {
-            _moveDuration = Vector2.Distance(TargetPosition, _startPosition) / GetSpeed();
             _frequency = -_frequency;
         }
-    }
-
-    public override void StartMove() {
-        base.StartMove();
         StartCoroutine(Move());
     }
 
-    public override void StopMove() {
-        base.StopMove();
+    public void StartMove() {
+        StartCoroutine(Move());
+    }
+
+    public void StopMove() {
         StopAllCoroutines();
     }
 
@@ -40,7 +36,7 @@ public class EnemySinusMove : EnemyMove
         _timeDown = _moveDuration;
         float timeUp = 0;
         while (_timeDown > 0) {
-            Vector2 pos = WaveLerp(_startPosition, TargetPosition, timeUp, _amplitude, _frequency);
+            Vector2 pos = WaveLerp(_startPosition, _targetPosition, timeUp, _amplitude, _frequency);
             transform.position = new Vector3(pos.x, pos.y);
             _timeDown -= Time.deltaTime;
             timeUp += Time.deltaTime / _moveDuration;
