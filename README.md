@@ -1,4 +1,6 @@
 # 100hp_games_test
+Геймплей https://youtu.be/d_lkoxvHLMM
+
 Задача: разработать рабочий прототип игры на Unity, ориентируясь на основные механики игры “The tower - idle tower defense”, как на [референс](https://lh3.googleusercontent.com/H1JL8aKk2pfhsQIIa6-Lmw7D7xeTWswPVqdRln11J4WctQx_FKlw67YvpVlFp18JVBfIZvN5iYRuiUbXngdvGewnh_-DCWXFLCOjhTGM1rM9WPji4PQUm9xG1xr3rj8XCjasFUyugZ0Tu42rqIW6jYk);
 
 Важно: (визуально игру повторять не надо, наоборот - любой креатив будет восприниматься как плюс)
